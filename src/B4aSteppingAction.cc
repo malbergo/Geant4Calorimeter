@@ -33,6 +33,7 @@
 #include "B4DetectorConstruction.hh"
 
 #include "G4Step.hh"
+#include "G4SystemOfUnits.hh"
 #include "G4RunManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -71,6 +72,8 @@ void B4aSteppingAction::UserSteppingAction(const G4Step* step)
     stepLength = step->GetStepLength();
   }
 
+//  std::cout << "Step Length / mm     : " << stepLength << std::endl;
+
 //  std::cout << "Step Z position : " << step->GetPreStepPoint()->GetPosition().z() << std::endl;
 //  std::cout << "Step Energy     : " << edep << std::endl;
 
@@ -91,18 +94,22 @@ void B4aSteppingAction::UserSteppingAction(const G4Step* step)
 
   if ( volume == fDetConstruction->GetAbsorberPV() ) {
     fEventAction->AddAbs(edep,stepLength);
+    //std::cout << "Step Length / mm     : " << stepLength/mm << std::endl;
   }
 
   if ( volume == fDetConstruction->GetAbsorberPV2() ) {
     fEventAction->AddAbs2(edep,stepLength);
+    //std::cout << "Step Length / mm     : " << stepLength/mm << std::endl;
   }
   
   if ( volume == fDetConstruction->GetGapPV() ) {
     fEventAction->AddGap(edep,stepLength);
+    //std::cout << "Step Length / mm     : " << stepLength/mm << std::endl;
   }
 
   if ( volume == fDetConstruction->GetGapPV2() ) {
     fEventAction->AddGap2(edep,stepLength);
+    //std::cout << "Step Length / mm     : " << stepLength/mm << std::endl;
   }
 }
 

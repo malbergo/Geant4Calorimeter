@@ -39,6 +39,7 @@
 
 #include "G4UImanager.hh"
 #include "G4UIcommand.hh"
+#include "G4StepLimiterPhysics.hh"
 #include "FTFP_BERT.hh"
 #include "QGSP_BERT.hh"
 
@@ -117,6 +118,7 @@ int main(int argc,char** argv)
 
   //G4VModularPhysicsList* physicsList = new FTFP_BERT; <- Original
   G4VModularPhysicsList* physicsList = new QGSP_BERT;
+  physicsList->RegisterPhysics(new G4StepLimiterPhysics()); // Has to be added to limit step size
   runManager->SetUserInitialization(physicsList);
     
   B4aActionInitialization* actionInitialization

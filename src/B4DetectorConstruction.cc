@@ -51,6 +51,8 @@
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "G4UserLimits.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4ThreadLocal 
@@ -60,12 +62,12 @@ G4GlobalMagFieldMessenger* B4DetectorConstruction::fMagFieldMessenger = 0;
 
 B4DetectorConstruction::B4DetectorConstruction()
  : G4VUserDetectorConstruction(),
-   m_nofLayers(20),
-   m_nofLayers2(10),
-   m_absoThickness(2.1*mm),
-   m_absoThickness2(4.2*mm),
-   m_gapThickness(0.5*mm),
-   m_gapThickness2(0.5*mm),
+   m_nofLayers(799),
+   m_nofLayers2(1),
+   m_absoThickness(0.21*mm),
+   m_absoThickness2(0.21*mm),
+   m_gapThickness(0.05*mm),
+   m_gapThickness2(0.05*mm),
    m_calorSizeXY(100.*cm),
    fAbsorberPV(0),
    fAbsorberPV2(0),
@@ -178,7 +180,7 @@ G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
                  false,            // no boolean operation
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps 
-  
+ 
   //                               
   // Calorimeter
   //  
@@ -365,6 +367,33 @@ G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps
 
+
+  // Example of User Limits
+  //
+  // Below is an example of how to set tracking constraints in a given
+  // logical volume
+  //
+  // Sets a max step length in the tracker region, with G4StepLimiter
+
+  G4double maxStep = 0.001*mm;
+  G4UserLimits* fStepLimit = new G4UserLimits(maxStep);
+  worldLV->SetUserLimits(fStepLimit);
+  calorLV->SetUserLimits(fStepLimit);
+  calorLV2->SetUserLimits(fStepLimit);
+  layerLV->SetUserLimits(fStepLimit);
+  layerLV2->SetUserLimits(fStepLimit);
+  absorberLV->SetUserLimits(fStepLimit);
+  absorberLV2->SetUserLimits(fStepLimit);
+  gapLV->SetUserLimits(fStepLimit);
+  gapLV2->SetUserLimits(fStepLimit);
+
+  // Set additional contraints on the track, with G4UserSpecialCuts
+  //
+  // G4double maxLength = 2*trackerLength, maxTime = 0.1*ns, minEkin = 10*MeV;
+  // trackerLV->SetUserLimits(new G4UserLimits(maxStep,
+  //                                           maxLength,
+  //                                           maxTime,
+  //                                           minEkin));
 
   //
   // print parameters

@@ -37,6 +37,7 @@
 
 class G4VPhysicalVolume;
 class G4GlobalMagFieldMessenger;
+class G4UserLimits;
 
 /// Detector construction class to define materials and geometry.
 /// The calorimeter is a box made of a given number of layers. A layer consists
